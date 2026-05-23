@@ -1,0 +1,58 @@
+import json
+import os
+import smtplib
+from email.mime.text import MIMEText
+
+class BalanceReporter:
+    def __init__(self):
+        self.file_name = "data.json"
+        self.gmail_user = "kenanhemidov415@gmail.com"
+        self.password = "swbr isnf rfmd phar"
+
+        if os.path.exists(self.file_name):
+            with open(self.file_name, "r") as file:
+                content = file.read()
+                if not content:  # Check if file is totally empty
+                    self.data = []
+                else:
+                    self.data = json.loads(content)
+        else:
+            self.data = []
+
+        # Final safety check:
+        if self.data is None:
+            self.data = []
+
+    def check_and_send(self):
+        to_notify = [user for user in self.data if int(user.get('balans', -1)) == 0]
+
+        if not to_notify:
+            print("No users found with 0 balance.")
+            return
+
+        try:
+            print("Connecting to Gmail...")
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(self.gmail_user, self.password)
+
+            for user in to_notify:
+                print(user)
+                name = user.get('name', 'Customer')
+                email = user.get('gmail')
+
+                message = MIMEText(f"Hello {name}, your balance is finished. Please refill.")
+                message["Subject"] = "Balance Alert"
+                message["From"] = self.gmail_user
+                message["To"] = email
+
+                server.sendmail(self.gmail_user, email, message.as_string())
+                print(f"✅ Email sent to {name} ({email})")
+
+            server.quit()
+        except Exception as e:
+            print(f"❌ An error occurred: {e}")
+
+if __name__ == "__main__":
+    reporter = BalanceReporter()
+    reporter.check_and_send()
