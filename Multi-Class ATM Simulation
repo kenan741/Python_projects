@@ -1,0 +1,78 @@
+class User:
+    def __init__(self, username, password,):
+        self.username = username
+        self.password = password
+        self.balance = 0
+
+    def check_balance(self):
+       print(self.balance)
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+
+    def withdraw(self, amount):
+        if 0 < amount < self.balance:
+            self.balance -= amount
+
+class Bank:
+    def __init__(self):
+        self.users = {}
+
+    def login(self, username, password):
+        for username in self.users:
+            if self.users[username].username == username and self.users[username].password == password:
+                print("Login successfully")
+                return self.users[username]
+        print("Wrong username or password")
+        return None
+
+    def register(self, username, password):
+        if len(username) < 4:
+            print("Your username is short")
+            return False
+        elif len(password) < 8:
+            print("your password is short")
+            return False
+        new_user = User(username, password)
+        self.users[username] = new_user
+        return True
+
+
+def atm_interface():
+    bank = Bank()
+    while True:
+        option = input("what do you want to do register, login or logout: ")
+        if option == "register":
+            new_name = input("Enter a new username: ")
+            new_password = input("Enter a new password: ")
+            bank.register(new_name, new_password)
+        elif option == "login":
+            name = input("Enter your name: ")
+            password = input("Enter your password: ")
+            user_data = bank.login(name, password)
+            if user_data:
+                user_menu(user_data)
+        elif option == "logout":
+            print("Goodbye!")
+            break
+        else:
+            print("Choose one of the options")
+            return
+
+def user_menu(user):
+    while True:
+        choice = input("Enter one of the options - deposit, withdraw, check balance, logout: ")
+        if choice == "deposit":
+            amount = int(input("Enter how much you want to deposit: "))
+            user.deposit(amount)
+        elif choice == "withdraw":
+            amount = int(input("How much you want to withdraw: "))
+            user.withdraw(amount)
+        elif choice == "check balance":
+            user.check_balance()
+        elif choice == "logout":
+            print("Goodbye!")
+            break
+
+atm_interface()
