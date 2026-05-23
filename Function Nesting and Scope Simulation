@@ -1,0 +1,47 @@
+import random
+
+
+def main():
+
+    def game_rules():
+        print('''rule_1:No cheating ,
+            rule_2:You can't cry if you lose ,
+            rule_3:no calling names to loser ''')
+
+    def get_name():
+        name = input("Enter a your name: ")
+        if name == "":
+            return get_name()
+        return name
+
+    def random_score():
+        return random.randint(1,100)
+
+    def score_level(score):
+        if 0 < score < 39:
+            print("You are a beginner level")
+        elif 40 < score < 69:
+            print("You are an intermediate level")
+        else:
+            print("You are an advanced level")
+
+    def game_result():
+        print(f"Name: {get_name()}")
+        score = random_score()
+        print(f"Score{score}")
+        score_level(score)
+
+    def win(score):
+        if score >= 60:
+            print("You win")
+        else:
+            print("You lose")
+
+    score = random_score()
+    game_rules()
+    get_name()
+    win(score)
+    game_result()
+    score_level(score)
+
+main()
