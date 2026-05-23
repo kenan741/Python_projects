@@ -1,0 +1,28 @@
+def plus(num_1, num_2):
+    return num_1 + num_2
+
+def minus(num_1, num_2):
+    return num_1 - num_2
+
+def multiply(num_1, num_2):
+    return num_1 * num_2
+
+def divide(num_1, num_2):
+    return num_1 / num_2
+
+def calculator():
+    num_1 = int(input("Enter a number: "))
+    num_2 = int(input("Enter a number: "))
+    operator = input("Enter an operator: ")
+    if operator == "+":
+        return plus(num_1, num_2)
+    elif operator == "-":
+        return minus(num_1, num_2)
+    elif operator == "/":
+        return divide(num_1, num_2)
+    elif operator == "*":
+        return multiply(num_1, num_2)
+    return None
+
+
+print(calculator() + calculator())
